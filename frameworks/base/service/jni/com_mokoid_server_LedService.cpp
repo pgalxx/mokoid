@@ -29,8 +29,8 @@ mokoid_init(JNIEnv *env, jclass clazz)
     LOGE("LedService JNI: Get Stub operations failed.");
     return -1;
 }
-
-static jboolean mokoid_setOn(JNIEnv* env, jobject thiz, jint led)
+//前面两个参数是虚拟机规定的，
+static jboolean mokoid_setOn(JNIEnv* env, jobject thiz, jstring mesg)
 {
     LOGI("LedService JNI: mokoid_setOn() is invoked.");
 
@@ -45,6 +45,20 @@ static jboolean mokoid_setOn(JNIEnv* env, jobject thiz, jint led)
 }
 
 static jboolean mokoid_setOff(JNIEnv* env, jobject thiz, jint led, jfloat x,
+				jobject str)//jintarray c
+{
+    LOGI("LedService JNI: mokoid_setOff() is invoked.");
+
+    if (sLedDevice == NULL) {
+        LOGI("LedService JNI: sLedDevice was not fetched correctly.");
+        return -1;
+    } else {
+        return sLedDevice->set_off(sLedDevice, led);
+    }
+
+    return 0;
+}
+static jboolean mokoid_gethello(JNIEnv* env, jobject thiz,jstring x,
 				jobject str)
 {
     LOGI("LedService JNI: mokoid_setOff() is invoked.");
@@ -59,13 +73,18 @@ static jboolean mokoid_setOff(JNIEnv* env, jobject thiz, jint led, jfloat x,
     return 0;
 }
 
+
+
+
 static const JNINativeMethod gMethods[] = {
     {"_init",	  	"()Z",
 			(void*)mokoid_init},
-    { "_set_on",          "(I)Z",
+    { "_set_on",          "(ILjavalang/String;)Z",
                         (void*)mokoid_setOn },
-    { "_set_off",          "(I)Z",
+    { "_set_off",          "(I[I)Z",
                         (void*)mokoid_setOff },
+    { "_get_hello",          "(Ljava/lang/string;)Z",
+                        (void*)mokoid_gethello },
 };
 
 int registerMethods(JNIEnv* env) {

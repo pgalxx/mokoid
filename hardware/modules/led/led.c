@@ -61,11 +61,11 @@ int led_off(struct led_control_device_t *dev, int32_t led)
 }
 
 int led_device_open(const struct hw_module_t* module, const char* name,
-        struct hw_device_t** device) 
+        struct hw_device_t** device) //device 是用来做返回数据的，
 {
 	struct led_control_device_t *dev;
 
-	dev = (struct led_control_device_t *)malloc(sizeof(*dev));
+	dev = (struct led_control_device_t *)malloc(sizeof(*dev));//实例化
 	memset(dev, 0, sizeof(*dev));
 
 	dev->common.tag =  HARDWARE_DEVICE_TAG;
@@ -73,10 +73,10 @@ int led_device_open(const struct hw_module_t* module, const char* name,
 	dev->common.module = module;
 	dev->common.close = led_device_close;
 
-	dev->set_on = led_on;
-	dev->set_off = led_off;
+	dev->set_on = led_on;//接口的实现
+	dev->set_off = led_off;//接口的实现
 
-	*device = &dev->common;
+	*device = &dev->common;//返回实例化
 
 	/* open device file */
 	dev->fd = open("/dev/cdata-test", O_RDWR);

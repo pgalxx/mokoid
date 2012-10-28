@@ -26,3 +26,4 @@ interface ILedService
     boolean setOn(int led);
     boolean setOff(int led);
 }
+//aidl是一个工具，从android sdk的开发里面可找到该工具的说明；aidl本质是一个代码产生器，它的语法是java代码，第三 它帮我们产生代码。
